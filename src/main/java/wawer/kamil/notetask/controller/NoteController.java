@@ -1,6 +1,7 @@
 package wawer.kamil.notetask.controller;
 
 import lombok.RequiredArgsConstructor;
+import org.apache.coyote.Response;
 import org.modelmapper.ModelMapper;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -12,6 +13,7 @@ import wawer.kamil.notetask.service.NoteService;
 
 import javax.validation.Valid;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static org.springframework.http.ResponseEntity.noContent;
 import static org.springframework.http.ResponseEntity.ok;
@@ -26,13 +28,17 @@ public class NoteController {
     private final ModelMapper mapper;
 
     @GetMapping
-    public ResponseEntity<List<Note>> getAllNotes() {
-        return ok(service.getAllNotes());
+    public ResponseEntity<List<ResponseNote>> getAllNotes() {
+        List<ResponseNote> responseNoteList = service.getAllNotes()
+                .stream().map(note -> mapper.map(note,ResponseNote.class)).collect(Collectors.toList());
+        return ok(responseNoteList);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Note> getById(@PathVariable Long id) throws NotContentFoundException {
-        return ok(service.getById(id));
+    public ResponseEntity<ResponseNote> getById(@PathVariable Long id) throws NotContentFoundException {
+        Note note = service.getById(id);
+        ResponseNote response = mapper.map(note,ResponseNote.class);
+        return ok(response);
     }
 
     @PostMapping
@@ -56,5 +62,4 @@ public class NoteController {
         service.deleteById(id);
         return noContent().build();
     }
-
 }
