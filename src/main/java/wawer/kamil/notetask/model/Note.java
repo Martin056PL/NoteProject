@@ -1,19 +1,25 @@
 package wawer.kamil.notetask.model;
 
-import lombok.Data;
+import lombok.*;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 
 import static java.time.LocalDateTime.now;
 import static javax.persistence.GenerationType.IDENTITY;
+import static lombok.AccessLevel.PRIVATE;
 
-@Data
 @Entity
+@Data
+@Getter
+@Setter
+@NoArgsConstructor(access = PRIVATE)
+@AllArgsConstructor
 public class Note implements Serializable {
 
     private static final long serialVersionUID = 2359335976189765545L;
@@ -22,20 +28,13 @@ public class Note implements Serializable {
     @GeneratedValue(strategy = IDENTITY)
     private Long id;
 
-    @NotEmpty
+    @NotBlank
     private String title;
 
-    @NotEmpty
+    @NotBlank
     private String content;
 
-    private final LocalDateTime dateOfInitialCreation;
+    private final LocalDateTime dateOfInitialCreation = now();
 
-    private LocalDateTime dateOfModification;
-
-    public Note(String title, String content) {
-        this.title = title;
-        this.content = content;
-        this.dateOfInitialCreation = now();
-        this.dateOfModification = now();
-    }
+    private LocalDateTime dateOfModification = now();
 }

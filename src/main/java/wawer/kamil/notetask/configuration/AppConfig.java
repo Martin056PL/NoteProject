@@ -1,4 +1,4 @@
-package wawer.kamil.notetask;
+package wawer.kamil.notetask.configuration;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.context.annotation.Bean;
