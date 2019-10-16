@@ -10,8 +10,10 @@ import wawer.kamil.notetask.model.Note;
 import wawer.kamil.notetask.model.responseDTO.ResponseNote;
 import wawer.kamil.notetask.service.NoteService;
 
+import javax.validation.Valid;
 import java.util.List;
 
+import static org.springframework.http.ResponseEntity.noContent;
 import static org.springframework.http.ResponseEntity.ok;
 
 @RestController
@@ -24,7 +26,7 @@ public class NoteController {
     private final ModelMapper mapper;
 
     @GetMapping
-    public ResponseEntity<List<Note>> getAllNotes(){
+    public ResponseEntity<List<Note>> getAllNotes() {
         return ok(service.getAllNotes());
     }
 
@@ -34,19 +36,25 @@ public class NoteController {
     }
 
     @PostMapping
-    public ResponseEntity<ResponseNote> addNewNote(@RequestBody RequestNote requestNote){
-        Note note = mapper.map(requestNote, Note.class);
+    public ResponseEntity<ResponseNote> addNewNote(@Valid @RequestBody RequestNote request) {
+        Note note = mapper.map(request, Note.class);
         Note savedNote = service.createNote(note);
-        ResponseNote response = mapper.map(savedNote,ResponseNote.class);
+        ResponseNote response = mapper.map(savedNote, ResponseNote.class);
         return ok(response);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<ResponseNote> updateNoteById(@PathVariable Long id, @RequestBody RequestNote requestNote) throws NotContentFoundException {
-        Note note = mapper.map(requestNote, Note.class);
-        Note updatedNote = service.updateNoteById(id,note);
+    public ResponseEntity<ResponseNote> updateNoteById(@PathVariable Long id, @Valid @RequestBody RequestNote request) throws NotContentFoundException {
+        Note note = mapper.map(request, Note.class);
+        Note updatedNote = service.updateNoteById(id, note);
         ResponseNote response = mapper.map(updatedNote, ResponseNote.class);
         return ok(response);
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<?> deleteNoteById(@PathVariable Long id) throws NotContentFoundException {
+        service.deleteById(id);
+        return noContent().build();
     }
 
 }
