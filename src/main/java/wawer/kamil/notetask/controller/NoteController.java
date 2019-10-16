@@ -41,4 +41,12 @@ public class NoteController {
         return ok(response);
     }
 
+    @PutMapping("/{id}")
+    public ResponseEntity<ResponseNote> updateNoteById(@PathVariable Long id, @RequestBody RequestNote requestNote) throws NotContentFoundException {
+        Note note = mapper.map(requestNote, Note.class);
+        Note updatedNote = service.updateNoteById(id,note);
+        ResponseNote response = mapper.map(updatedNote, ResponseNote.class);
+        return ok(response);
+    }
+
 }

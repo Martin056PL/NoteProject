@@ -12,4 +12,6 @@ public interface NoteService {
     Note getById(Long id) throws NotContentFoundException;
 
     Note createNote(Note note);
+
+    Note updateNoteById(Long id, Note note) throws NotContentFoundException;
 }

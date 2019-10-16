@@ -9,7 +9,9 @@ import wawer.kamil.notetask.model.Note;
 import wawer.kamil.notetask.repository.NoteRepository;
 import wawer.kamil.notetask.service.NoteService;
 
+import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -19,7 +21,7 @@ public class NoteServiceImpl implements NoteService {
 
 
     @Override
-    public List<Note> getAllNotes(){
+    public List<Note> getAllNotes() {
         return repository.findAll();
     }
 
@@ -29,8 +31,22 @@ public class NoteServiceImpl implements NoteService {
     }
 
     @Override
-    public Note createNote(Note note){
+    public Note createNote(Note note) {
         return repository.save(note);
     }
+
+    @Override
+    public Note updateNoteById(Long id, Note newestNote) throws NotContentFoundException {
+        Note note = repository.findById(id).orElseThrow(NotContentFoundException::new);
+        updateNote(note, newestNote);
+        return repository.save(note);
+    }
+
+    private void updateNote(Note noteFromDB, Note newestNote) {
+        noteFromDB.setTitle(newestNote.getTitle());
+        noteFromDB.setContent(newestNote.getContent());
+        noteFromDB.setDateOfModification(LocalDateTime.now());
+    }
+
 
 }
