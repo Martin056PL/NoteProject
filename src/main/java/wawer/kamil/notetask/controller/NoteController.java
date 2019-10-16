@@ -12,16 +12,18 @@ import wawer.kamil.notetask.model.responseDTO.ResponseNote;
 import wawer.kamil.notetask.service.NoteService;
 
 import javax.validation.Valid;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static org.springframework.http.ResponseEntity.noContent;
-import static org.springframework.http.ResponseEntity.ok;
+import static org.springframework.http.ResponseEntity.*;
 
 @RestController
 @CrossOrigin
 @RequiredArgsConstructor
 @RequestMapping("notes")
+@RestControllerAdvice
 public class NoteController {
 
     private final NoteService service;
@@ -42,11 +44,11 @@ public class NoteController {
     }
 
     @PostMapping
-    public ResponseEntity<ResponseNote> addNewNote(@Valid @RequestBody RequestNote request) {
+    public ResponseEntity<ResponseNote> addNewNote(@Valid @RequestBody RequestNote request) throws URISyntaxException {
         Note note = mapper.map(request, Note.class);
         Note savedNote = service.createNote(note);
         ResponseNote response = mapper.map(savedNote, ResponseNote.class);
-        return ok(response);
+        return created(new URI("note=" + response.getId())).body(response);
     }
 
     @PutMapping("/{id}")

@@ -25,7 +25,7 @@ public class NoteServiceImpl implements NoteService {
 
     @Override
     public Note getById(Long id) throws NotContentFoundException {
-        return repository.findById(id).orElseThrow(() -> new NotContentFoundException(YOUR_NOTE_HAVEN_T_BEEN_FOUND));
+        return repository.findById(id).orElseThrow(NotContentFoundException::new);
     }
 
     @Override
@@ -35,7 +35,7 @@ public class NoteServiceImpl implements NoteService {
 
     @Override
     public Note updateNoteById(Long id, Note newestNote) throws NotContentFoundException {
-        Note note = repository.findById(id).orElseThrow(() -> new NotContentFoundException(YOUR_NOTE_HAVEN_T_BEEN_FOUND));
+        Note note = repository.findById(id).orElseThrow(NotContentFoundException::new);
         updateNote(note, newestNote);
         return repository.save(note);
     }
@@ -51,7 +51,7 @@ public class NoteServiceImpl implements NoteService {
         if (repository.existsById(id)) {
             repository.deleteById(id);
         } else {
-            throw new NotContentFoundException(YOUR_NOTE_HAVEN_T_BEEN_FOUND);
+            throw new NotContentFoundException();
         }
     }
 
