@@ -18,7 +18,6 @@ import static lombok.AccessLevel.PRIVATE;
 @Getter
 @Setter
 @NoArgsConstructor(access = PRIVATE)
-@AllArgsConstructor
 public class Note implements Serializable {
 
     private static final long serialVersionUID = 2359335976189765545L;
@@ -33,7 +32,17 @@ public class Note implements Serializable {
     @NotBlank
     private String content;
 
-    private final LocalDateTime dateOfInitialCreation = now();
+    private LocalDateTime dateOfInitialCreation = now();
 
     private LocalDateTime dateOfModification = now();
+
+    private Boolean isDeleted = false;
+
+    public Note( String title, String content) {
+        this.title = title;
+        this.content = content;
+        this.dateOfInitialCreation = now();
+        this.dateOfModification = now();
+        this.isDeleted = false;
+    }
 }

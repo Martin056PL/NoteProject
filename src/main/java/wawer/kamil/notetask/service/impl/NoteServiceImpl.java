@@ -12,6 +12,7 @@ import wawer.kamil.notetask.service.NoteService;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 @Service
@@ -20,17 +21,18 @@ public class NoteServiceImpl implements NoteService {
 
     private final NoteRepository repository;
     private final ModelMapper mapper;
+    private final Predicate<Note> isDeleted =  note -> note.getIsDeleted().equals(false);
 
 
     @Override
     public List<ResponseNote> getAllNotes() {
         return repository.findAll()
-                .stream().map(this::mapToDto).collect(Collectors.toList());
+                .stream().filter(isDeleted).map(this::mapToDto).collect(Collectors.toList());
     }
 
     @Override
     public ResponseNote getById(Long id) throws NotContentFoundException {
-        return repository.findById(id)
+        return repository.findById(id).filter(isDeleted)
                 .map(this::mapToDto).orElseThrow(NotContentFoundException::new);
     }
 
@@ -42,7 +44,7 @@ public class NoteServiceImpl implements NoteService {
 
     @Override
     public ResponseNote updateNoteById(Long id, RequestNote newestNote) throws NotContentFoundException {
-        Note note = repository.findById(id).orElseThrow(NotContentFoundException::new);
+        Note note = repository.findById(id).filter(isDeleted).orElseThrow(NotContentFoundException::new);
         updateNote(note, mapFromDto(newestNote));
         return mapToDto(repository.save(note));
     }
@@ -55,11 +57,12 @@ public class NoteServiceImpl implements NoteService {
 
     @Override
     public void deleteById(Long id) throws NotContentFoundException {
-        if (repository.existsById(id)) {
-            repository.deleteById(id);
-        } else {
-            throw new NotContentFoundException();
-        }
+        repository.findById(id)
+                .filter(isDeleted)
+                .map(note -> {
+                    note.setIsDeleted(true);
+                    return repository.save(note);
+                }).orElseThrow(NotContentFoundException::new);
     }
 
     private ResponseNote mapToDto(Note note) {
