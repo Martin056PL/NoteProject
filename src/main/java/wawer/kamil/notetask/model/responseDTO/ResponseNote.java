@@ -1,7 +1,9 @@
 package wawer.kamil.notetask.model.responseDTO;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.time.LocalDateTime;
 
@@ -13,7 +15,6 @@ import static lombok.AccessLevel.PRIVATE;
 @Setter
 public class ResponseNote {
 
-    @JsonIgnore
     private Long id;
 
     private String title;
