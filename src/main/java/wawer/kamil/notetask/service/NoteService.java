@@ -1,19 +1,20 @@
 package wawer.kamil.notetask.service;
 
 import wawer.kamil.notetask.exceptions.NotContentFoundException;
-import wawer.kamil.notetask.model.Note;
+import wawer.kamil.notetask.model.requestDTO.RequestNote;
+import wawer.kamil.notetask.model.responseDTO.ResponseNote;
 
 import java.util.List;
 
 public interface NoteService {
 
-    List<Note> getAllNotes();
+    List<ResponseNote> getAllNotes();
 
-    Note getById(Long id) throws NotContentFoundException;
+    ResponseNote getById(Long id) throws NotContentFoundException;
 
-    Note createNote(Note note);
+    ResponseNote createNote(RequestNote requestNote);
 
-    Note updateNoteById(Long id, Note note) throws NotContentFoundException;
+    ResponseNote updateNoteById(Long id, RequestNote note) throws NotContentFoundException;
 
     void deleteById(Long id) throws NotContentFoundException;
 }
