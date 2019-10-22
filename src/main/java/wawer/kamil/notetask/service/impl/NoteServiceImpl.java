@@ -26,20 +26,20 @@ public class NoteServiceImpl implements NoteService {
 
 
     @Override
-    public List<ResponseNote> getAllNotes() {
+    public List<ResponseAllNotes> getAllNotes() {
         return repository.findAll()
-                .stream().filter(isDeleted).map(this::mapToDto).collect(Collectors.toList());
+                .stream().filter(isDeleted).map(this::mapToDtoN).collect(Collectors.toList());
     }
 
     @Override
-    public ResponseNote getById(Long id) throws NotContentFoundException {
+    public ResponseAllNotes getById(Long id) throws NotContentFoundException {
         return repository.findById(id).filter(isDeleted)
-                .map(this::mapToDto).orElseThrow(NotContentFoundException::new);
+                .map(this::mapToDtoN).orElseThrow(NotContentFoundException::new);
     }
 
     @Override
     public ResponseAllNotes createNote(RequestNote requestNote) {
-        NoteDetails noteDetails = mapFromDto(requestNote);//mapFromDto(requestNote);
+        NoteDetails noteDetails = mapFromDto(requestNote);
         Note note = new Note();
         note.addNoteDetails(noteDetails);
         Note save = repository.save(note);

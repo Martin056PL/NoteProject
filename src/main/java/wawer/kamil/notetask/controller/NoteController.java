@@ -26,12 +26,12 @@ public class NoteController {
     private final NoteService service;
 
     @GetMapping
-    public ResponseEntity<List<ResponseNote>> getAllNotes() {
+    public ResponseEntity<List<ResponseAllNotes>> getAllNotes() {
         return ok(service.getAllNotes());
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<ResponseNote> getById(@PathVariable Long id) throws NotContentFoundException {
+    public ResponseEntity<ResponseAllNotes> getById(@PathVariable Long id) throws NotContentFoundException {
         return ok(service.getById(id));
     }
 
