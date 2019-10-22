@@ -49,15 +49,15 @@ public class NoteServiceImpl implements NoteService {
     @Override
     public ResponseNote updateNoteById(Long id, RequestNote newestNote) throws NotContentFoundException {
         Note note = repository.findById(id).filter(isDeleted).orElseThrow(NotContentFoundException::new);
-       // updateNote(note, mapFromDto(newestNote));
+        updateNote(note, mapFromDto(newestNote));
         return mapToDto(repository.save(note));
     }
 
-//    private void updateNote(Note noteFromDB, Note newestNote) {
-//        noteFromDB.setTitle(newestNote.getTitle());
-//        noteFromDB.setContent(newestNote.getContent());
-//        noteFromDB.setDateOfModification(LocalDateTime.now());
-//    }
+    private void updateNote(Note noteFromDB, NoteDetails newestNote) {
+        NoteDetails newNoteDetails = new NoteDetails(newestNote.getTitle(), newestNote.getContent());
+        newNoteDetails.setVersion((long) noteFromDB.getNoteDetailsList().size() + 1);
+        noteFromDB.addNoteDetails(newNoteDetails);
+    }
 
     @Override
     public void deleteById(Long id) throws NotContentFoundException {
