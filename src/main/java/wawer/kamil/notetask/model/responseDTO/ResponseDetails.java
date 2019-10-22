@@ -13,11 +13,13 @@ import static lombok.AccessLevel.PRIVATE;
 @AllArgsConstructor
 @Getter
 @Setter
-public class ResponseNote {
+public class ResponseDetails {
 
-    private Long id;
+    private String title;
 
-    private LocalDateTime dateOfInitialCreation;
+    private String content;
 
-    private ResponseDetails responseDetails;
+    private LocalDateTime dateOfModification;
+
+    private Long version;
 }

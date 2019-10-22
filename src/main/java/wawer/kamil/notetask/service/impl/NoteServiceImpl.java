@@ -5,12 +5,13 @@ import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 import wawer.kamil.notetask.exceptions.NotContentFoundException;
 import wawer.kamil.notetask.model.Note;
+import wawer.kamil.notetask.model.NoteDetails;
 import wawer.kamil.notetask.model.requestDTO.RequestNote;
+import wawer.kamil.notetask.model.responseDTO.ResponseAllNotes;
 import wawer.kamil.notetask.model.responseDTO.ResponseNote;
 import wawer.kamil.notetask.repository.NoteRepository;
 import wawer.kamil.notetask.service.NoteService;
 
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
@@ -37,23 +38,26 @@ public class NoteServiceImpl implements NoteService {
     }
 
     @Override
-    public ResponseNote createNote(RequestNote requestNote) {
-        Note note = repository.save(mapFromDto(requestNote));
-        return mapToDto(note);
+    public ResponseAllNotes createNote(RequestNote requestNote) {
+        NoteDetails noteDetails = mapFromDto(requestNote);//mapFromDto(requestNote);
+        Note note = new Note();
+        note.addNoteDetails(noteDetails);
+        Note save = repository.save(note);
+        return mapToDtoN(save);
     }
 
     @Override
     public ResponseNote updateNoteById(Long id, RequestNote newestNote) throws NotContentFoundException {
         Note note = repository.findById(id).filter(isDeleted).orElseThrow(NotContentFoundException::new);
-        updateNote(note, mapFromDto(newestNote));
+       // updateNote(note, mapFromDto(newestNote));
         return mapToDto(repository.save(note));
     }
 
-    private void updateNote(Note noteFromDB, Note newestNote) {
-        noteFromDB.setTitle(newestNote.getTitle());
-        noteFromDB.setContent(newestNote.getContent());
-        noteFromDB.setDateOfModification(LocalDateTime.now());
-    }
+//    private void updateNote(Note noteFromDB, Note newestNote) {
+//        noteFromDB.setTitle(newestNote.getTitle());
+//        noteFromDB.setContent(newestNote.getContent());
+//        noteFromDB.setDateOfModification(LocalDateTime.now());
+//    }
 
     @Override
     public void deleteById(Long id) throws NotContentFoundException {
@@ -69,7 +73,11 @@ public class NoteServiceImpl implements NoteService {
         return mapper.map(note, ResponseNote.class);
     }
 
-    private Note mapFromDto(RequestNote request) {
-        return mapper.map(request, Note.class);
+    private ResponseAllNotes mapToDtoN(Note note) {
+        return mapper.map(note, ResponseAllNotes.class);
+    }
+
+    private NoteDetails mapFromDto(RequestNote request) {
+        return mapper.map(request, NoteDetails.class);
     }
 }

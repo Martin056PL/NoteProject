@@ -5,6 +5,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import wawer.kamil.notetask.exceptions.NotContentFoundException;
 import wawer.kamil.notetask.model.requestDTO.RequestNote;
+import wawer.kamil.notetask.model.responseDTO.ResponseAllNotes;
 import wawer.kamil.notetask.model.responseDTO.ResponseNote;
 import wawer.kamil.notetask.service.NoteService;
 
@@ -35,8 +36,8 @@ public class NoteController {
     }
 
     @PostMapping
-    public ResponseEntity<ResponseNote> addNewNote(@Valid @RequestBody RequestNote request) throws URISyntaxException {
-        ResponseNote response = service.createNote(request);
+    public ResponseEntity<ResponseAllNotes> addNewNote(@Valid @RequestBody RequestNote request) throws URISyntaxException {
+        ResponseAllNotes response = service.createNote(request);
         return created(new URI("note=" + response.getId())).body(response);
     }
 

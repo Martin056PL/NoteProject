@@ -1,23 +1,20 @@
 package wawer.kamil.notetask.model;
 
-import lombok.*;
+import lombok.Data;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.validation.constraints.NotBlank;
+import javax.persistence.*;
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 import static java.time.LocalDateTime.now;
+import static javax.persistence.CascadeType.ALL;
+import static javax.persistence.FetchType.LAZY;
 import static javax.persistence.GenerationType.IDENTITY;
-import static lombok.AccessLevel.PRIVATE;
 
 @Entity
 @Data
-@Getter
-@Setter
-@NoArgsConstructor(access = PRIVATE)
 public class Note implements Serializable {
 
     private static final long serialVersionUID = 2359335976189765545L;
@@ -26,23 +23,32 @@ public class Note implements Serializable {
     @GeneratedValue(strategy = IDENTITY)
     private Long id;
 
-    @NotBlank
-    private String title;
+    private LocalDateTime dateOfInitialCreation;
 
-    @NotBlank
-    private String content;
+    private Boolean isDeleted;
 
-    private LocalDateTime dateOfInitialCreation = now();
+    @ElementCollection(fetch = LAZY)
+    @OneToMany(mappedBy = "note", cascade = ALL)
+    private List<NoteDetails> noteDetailsList;
 
-    private LocalDateTime dateOfModification = now();
-
-    private Boolean isDeleted = false;
-
-    public Note( String title, String content) {
-        this.title = title;
-        this.content = content;
+    public Note() {
         this.dateOfInitialCreation = now();
-        this.dateOfModification = now();
         this.isDeleted = false;
+        this.noteDetailsList = initNoteDetailsList();
     }
+
+    private List<NoteDetails> initNoteDetailsList() {
+        if (noteDetailsList == null) {
+            return noteDetailsList = new ArrayList<>();
+        } else {
+            return noteDetailsList;
+        }
+    }
+
+    public void addNoteDetails(NoteDetails noteDetails){
+        noteDetailsList.add(noteDetails);
+        noteDetails.setNote(this);
+    }
+
+
 }

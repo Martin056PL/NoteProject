@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 import static lombok.AccessLevel.PRIVATE;
 
@@ -13,11 +14,12 @@ import static lombok.AccessLevel.PRIVATE;
 @AllArgsConstructor
 @Getter
 @Setter
-public class ResponseNote {
+public class ResponseAllNotes {
 
     private Long id;
 
     private LocalDateTime dateOfInitialCreation;
 
-    private ResponseDetails responseDetails;
+    private List<ResponseDetails> noteDetailsList;
+
 }
