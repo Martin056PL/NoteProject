@@ -4,7 +4,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import wawer.kamil.notetask.exceptions.NotContentFoundException;
-import wawer.kamil.notetask.model.Note;
 import wawer.kamil.notetask.model.requestDTO.RequestNote;
 import wawer.kamil.notetask.model.responseDTO.ResponseAllNotes;
 import wawer.kamil.notetask.model.responseDTO.ResponseNote;

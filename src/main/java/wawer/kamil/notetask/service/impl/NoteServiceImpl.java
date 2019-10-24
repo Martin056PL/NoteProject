@@ -87,10 +87,6 @@ public class NoteServiceImpl implements NoteService {
                 }).orElseThrow(NotContentFoundException::new);
     }
 
-    private ResponseNote mapToDto(Note note) {
-        return mapper.map(note, ResponseNote.class);
-    }
-
     private ResponseAllNotes mapToDtoAllNotes(Note note) {
         return mapper.map(note, ResponseAllNotes.class);
     }
