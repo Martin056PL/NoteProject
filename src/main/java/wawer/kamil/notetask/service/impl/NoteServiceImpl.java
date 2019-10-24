@@ -22,19 +22,35 @@ public class NoteServiceImpl implements NoteService {
 
     private final NoteRepository repository;
     private final ModelMapper mapper;
-    private final Predicate<Note> isDeleted =  note -> note.getIsDeleted().equals(false);
+    private final Predicate<Note> isDeleted = note -> note.getIsDeleted().equals(false);
 
 
     @Override
-    public List<ResponseAllNotes> getAllNotes() {
+    public List<ResponseAllNotes> getAllHistoryOfNotes() {
         return repository.findAll()
-                .stream().filter(isDeleted).map(this::mapToDtoN).collect(Collectors.toList());
+                .stream().map(this::mapToDtoAllNotes).collect(Collectors.toList());
     }
 
     @Override
-    public ResponseAllNotes getById(Long id) throws NotContentFoundException {
-        return repository.findById(id).filter(isDeleted)
-                .map(this::mapToDtoN).orElseThrow(NotContentFoundException::new);
+    public ResponseAllNotes getAllHistoryOfNoteById(Long id) throws NotContentFoundException {
+        return repository.findById(id).map(this::mapToDtoAllNotes).orElseThrow(NotContentFoundException::new);
+    }
+
+    @Override
+    public ResponseNote getNoteById(Long id) throws NotContentFoundException {
+        Note note = repository.findById(id).filter(isDeleted).orElseThrow(NotContentFoundException::new);
+        NoteDetails noteDetails = note.getNoteDetailsList().get(note.getNoteDetailsList().size() - 1);
+        return transformDataToDto(note, noteDetails);
+    }
+
+    private ResponseNote transformDataToDto(Note note, NoteDetails noteDetails) {
+        ResponseNote response = new ResponseNote();
+        response.setId(note.getId());
+        response.setDateOfInitialCreation(note.getDateOfInitialCreation());
+        response.setDateOfModification(noteDetails.getDateOfModification());
+        response.setTitle(noteDetails.getTitle());
+        response.setContent(noteDetails.getContent());
+        return response;
     }
 
     @Override
@@ -43,19 +59,20 @@ public class NoteServiceImpl implements NoteService {
         Note note = new Note();
         note.addNoteDetails(noteDetails);
         Note save = repository.save(note);
-        return mapToDtoN(save);
+        return mapToDtoAllNotes(save);
     }
 
     @Override
     public ResponseNote updateNoteById(Long id, RequestNote newestNote) throws NotContentFoundException {
         Note note = repository.findById(id).filter(isDeleted).orElseThrow(NotContentFoundException::new);
-        updateNote(note, mapFromDto(newestNote));
+        updateDetailsOfNote(note, mapFromDto(newestNote));
         return mapToDto(repository.save(note));
     }
 
-    private void updateNote(Note noteFromDB, NoteDetails newestNote) {
+    private void updateDetailsOfNote(Note noteFromDB, NoteDetails newestNote) {
         NoteDetails newNoteDetails = new NoteDetails(newestNote.getTitle(), newestNote.getContent());
-        newNoteDetails.setVersion((long) noteFromDB.getNoteDetailsList().size() + 1);
+        long newestVersion = (long) noteFromDB.getNoteDetailsList().size() + 1;
+        newNoteDetails.setVersion(newestVersion);
         noteFromDB.addNoteDetails(newNoteDetails);
     }
 
@@ -73,7 +90,7 @@ public class NoteServiceImpl implements NoteService {
         return mapper.map(note, ResponseNote.class);
     }
 
-    private ResponseAllNotes mapToDtoN(Note note) {
+    private ResponseAllNotes mapToDtoAllNotes(Note note) {
         return mapper.map(note, ResponseAllNotes.class);
     }
 

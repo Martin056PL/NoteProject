@@ -4,12 +4,13 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import wawer.kamil.notetask.model.NoteDetails;
 
 import java.time.LocalDateTime;
 
-import static lombok.AccessLevel.PRIVATE;
+import static lombok.AccessLevel.PUBLIC;
 
-@NoArgsConstructor(access = PRIVATE)
+@NoArgsConstructor(access = PUBLIC)
 @AllArgsConstructor
 @Getter
 @Setter
@@ -19,5 +20,9 @@ public class ResponseNote {
 
     private LocalDateTime dateOfInitialCreation;
 
-    private ResponseDetails responseDetails;
+    private String title;
+
+    private String content;
+
+    private LocalDateTime dateOfModification;
 }

@@ -13,7 +13,7 @@ import static lombok.AccessLevel.PRIVATE;
 @AllArgsConstructor
 @Getter
 @Setter
-public class ResponseDetails {
+class ResponseDetails {
 
     private String title;
 

@@ -8,6 +8,7 @@ import org.hibernate.annotations.Fetch;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
+import java.io.Serializable;
 import java.time.LocalDateTime;
 
 import static java.time.LocalDateTime.now;
@@ -19,7 +20,9 @@ import static javax.persistence.GenerationType.IDENTITY;
 @Data
 @NoArgsConstructor
 @ToString(exclude = "note")
-public class NoteDetails {
+public class NoteDetails implements Serializable {
+
+    private static final long serialVersionUID = 9014833261428602059L;
 
     @Id
     @GeneratedValue(strategy = IDENTITY)

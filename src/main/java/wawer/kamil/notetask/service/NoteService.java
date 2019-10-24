@@ -9,9 +9,11 @@ import java.util.List;
 
 public interface NoteService {
 
-    List<ResponseAllNotes> getAllNotes();
+    List<ResponseAllNotes> getAllHistoryOfNotes();
 
-    ResponseAllNotes getById(Long id) throws NotContentFoundException;
+    ResponseAllNotes getAllHistoryOfNoteById(Long id) throws NotContentFoundException;
+
+    ResponseNote getNoteById(Long id) throws NotContentFoundException;
 
     ResponseAllNotes createNote(RequestNote requestNote);
 
