@@ -66,7 +66,8 @@ public class NoteServiceImpl implements NoteService {
     public ResponseNote updateNoteById(Long id, RequestNote newestNote) throws NotContentFoundException {
         Note note = repository.findById(id).filter(isDeleted).orElseThrow(NotContentFoundException::new);
         updateDetailsOfNote(note, mapFromDto(newestNote));
-        return mapToDto(repository.save(note));
+        repository.save(note);
+        return transformDataToDto(note, mapFromDto(newestNote));
     }
 
     private void updateDetailsOfNote(Note noteFromDB, NoteDetails newestNote) {
