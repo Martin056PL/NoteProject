@@ -53,7 +53,7 @@ public class NoteController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<?> deleteNoteById(@PathVariable Long id) throws NotContentFoundException {
+    public ResponseEntity deleteNoteById(@PathVariable Long id) throws NotContentFoundException {
         service.deleteById(id);
         return noContent().build();
     }

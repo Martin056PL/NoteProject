@@ -20,6 +20,8 @@ public class ResponseAllNotes {
 
     private LocalDateTime dateOfInitialCreation;
 
+    private Boolean isDeleted;
+
     private List<ResponseDetails> noteDetailsList;
 
 }
