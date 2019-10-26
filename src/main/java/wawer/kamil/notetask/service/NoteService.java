@@ -1,7 +1,6 @@
 package wawer.kamil.notetask.service;
 
 import wawer.kamil.notetask.exceptions.NotContentFoundException;
-import wawer.kamil.notetask.model.Note;
 import wawer.kamil.notetask.model.requestDTO.RequestNote;
 import wawer.kamil.notetask.model.responseDTO.ResponseAllNotes;
 import wawer.kamil.notetask.model.responseDTO.ResponseNote;
