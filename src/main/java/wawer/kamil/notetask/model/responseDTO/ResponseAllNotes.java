@@ -6,24 +6,22 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
-import static lombok.AccessLevel.PUBLIC;
+import static lombok.AccessLevel.PRIVATE;
 
-@NoArgsConstructor(access = PUBLIC)
+@NoArgsConstructor(access = PRIVATE)
 @AllArgsConstructor
 @Getter
 @Setter
-public class ResponseNote {
+public class ResponseAllNotes {
 
     private Long id;
 
     private LocalDateTime dateOfInitialCreation;
 
-    private String title;
-
-    private String content;
-
-    private LocalDateTime dateOfModification;
-
     private Boolean isDeleted;
+
+    private List<ResponseDetails> noteDetailsList;
+
 }

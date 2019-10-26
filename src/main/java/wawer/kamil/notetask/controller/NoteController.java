@@ -5,6 +5,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import wawer.kamil.notetask.exceptions.NotContentFoundException;
 import wawer.kamil.notetask.model.requestDTO.RequestNote;
+import wawer.kamil.notetask.model.responseDTO.ResponseAllNotes;
 import wawer.kamil.notetask.model.responseDTO.ResponseNote;
 import wawer.kamil.notetask.service.NoteService;
 
@@ -24,19 +25,29 @@ public class NoteController {
 
     private final NoteService service;
 
-    @GetMapping
-    public ResponseEntity<List<ResponseNote>> getAllNotes() {
-        return ok(service.getAllNotes());
+    @GetMapping("/all")
+    public ResponseEntity<List<ResponseAllNotes>> getAllHistoryOfNotes() {
+        return ok(service.getAllHistoryOfNotes());
+    }
+
+    @GetMapping("/all/{id}")
+    public ResponseEntity<ResponseAllNotes> getAllHistoryOfNoteById(@PathVariable Long id) throws NotContentFoundException {
+        return ok(service.getAllHistoryOfNoteById(id));
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<ResponseNote> getById(@PathVariable Long id) throws NotContentFoundException {
-        return ok(service.getById(id));
+    public ResponseEntity<ResponseNote> getNoteById(@PathVariable Long id) throws NotContentFoundException {
+        return ok(service.getNoteById(id));
+    }
+
+    @GetMapping
+    public ResponseEntity<List<ResponseNote>> getAllNotes() throws NotContentFoundException {
+        return ok(service.getAllNotes());
     }
 
     @PostMapping
-    public ResponseEntity<ResponseNote> addNewNote(@Valid @RequestBody RequestNote request) throws URISyntaxException {
-        ResponseNote response = service.createNote(request);
+    public ResponseEntity<ResponseAllNotes> addNewNote(@Valid @RequestBody RequestNote request) throws URISyntaxException {
+        ResponseAllNotes response = service.createNote(request);
         return created(new URI("note=" + response.getId())).body(response);
     }
 
@@ -47,7 +58,7 @@ public class NoteController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<?> deleteNoteById(@PathVariable Long id) throws NotContentFoundException {
+    public ResponseEntity deleteNoteById(@PathVariable Long id) throws NotContentFoundException {
         service.deleteById(id);
         return noContent().build();
     }

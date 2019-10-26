@@ -7,17 +7,13 @@ import lombok.Setter;
 
 import java.time.LocalDateTime;
 
-import static lombok.AccessLevel.PUBLIC;
+import static lombok.AccessLevel.PRIVATE;
 
-@NoArgsConstructor(access = PUBLIC)
+@NoArgsConstructor(access = PRIVATE)
 @AllArgsConstructor
 @Getter
 @Setter
-public class ResponseNote {
-
-    private Long id;
-
-    private LocalDateTime dateOfInitialCreation;
+class ResponseDetails {
 
     private String title;
 
@@ -25,5 +21,5 @@ public class ResponseNote {
 
     private LocalDateTime dateOfModification;
 
-    private Boolean isDeleted;
+    private Long version;
 }
