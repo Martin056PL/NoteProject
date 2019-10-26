@@ -16,10 +16,13 @@
 
     <properties>
         <java.version>1.8</java.version>
-        <modelmapper.version>2.3.2</modelmapper.version>
         <sonar.jdbc.username>admin</sonar.jdbc.username>
         <sonar.jdbc.password>admin</sonar.jdbc.password>
         <sonar.dynamic>reuseReports</sonar.dynamic>
+        <modelmapper.version>2.3.2</modelmapper.version>
+        <postgresql>42.2.8</postgresql>
+        <jacoco-maven-plugin>0.8.4</jacoco-maven-plugin>
+        <sonar-maven-plugin>3.6.0.1398</sonar-maven-plugin>
     </properties>
 
     <dependencies>
@@ -31,7 +34,6 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
-
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-devtools</artifactId>
@@ -61,12 +63,12 @@
         <dependency>
             <groupId>org.jacoco</groupId>
             <artifactId>jacoco-maven-plugin</artifactId>
-            <version>0.8.4</version>
+            <version>${jacoco-maven-plugin}</version>
         </dependency>
         <dependency>
             <groupId>org.postgresql</groupId>
             <artifactId>postgresql</artifactId>
-            <version>42.2.8</version>
+            <version>${postgresql.version}</version>
         </dependency>
     </dependencies>
 
@@ -102,7 +104,7 @@
                 <plugin>
                     <groupId>org.sonarsource.scanner.maven</groupId>
                     <artifactId>sonar-maven-plugin</artifactId>
-                    <version>3.6.0.1398</version>
+                    <version>${sonar-maven-plugin}</version>
                 </plugin>
             </plugins>
         </pluginManagement>
