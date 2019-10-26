@@ -1,6 +1,7 @@
 package wawer.kamil.notetask.model;
 
 import lombok.Data;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -15,16 +16,21 @@ import static javax.persistence.GenerationType.IDENTITY;
 
 @Entity
 @Data
+@Table(name = "note")
+@EntityListeners(AuditingEntityListener.class)
 public class Note implements Serializable {
 
     private static final long serialVersionUID = 2359335976189765545L;
 
     @Id
     @GeneratedValue(strategy = IDENTITY)
+    @Column(name = "id")
     private Long id;
 
+    @Column(name = "date_of_initial_creation")
     private LocalDateTime dateOfInitialCreation;
 
+    @Column(name = "is_deleted")
     private Boolean isDeleted;
 
     @ElementCollection(fetch = LAZY)

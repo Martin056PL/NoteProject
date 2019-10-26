@@ -19,22 +19,28 @@ import static javax.persistence.GenerationType.IDENTITY;
 @Data
 @NoArgsConstructor
 @ToString(exclude = "note")
+@Table(name = "note_details")
 public class NoteDetails implements Serializable {
 
     private static final long serialVersionUID = 9014833261428602059L;
 
     @Id
     @GeneratedValue(strategy = IDENTITY)
+    @Column(name = "details_id")
     private Long detailsId;
 
     @NotBlank
+    @Column(name = "title")
     private String title;
 
     @NotBlank
+    @Column(name = "content")
     private String content;
 
+    @Column(name = "date_of_modification")
     private LocalDateTime dateOfModification = now();
 
+    @Column(name = "version")
     private int version = 1;
 
     @ManyToOne(cascade = {DETACH, MERGE, PERSIST, REFRESH},fetch = LAZY)
