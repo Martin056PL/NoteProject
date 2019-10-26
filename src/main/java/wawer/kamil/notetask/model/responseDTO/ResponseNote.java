@@ -24,4 +24,6 @@ public class ResponseNote {
     private String content;
 
     private LocalDateTime dateOfModification;
+
+    private Boolean isDeleted;
 }

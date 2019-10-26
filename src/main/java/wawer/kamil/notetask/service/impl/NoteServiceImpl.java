@@ -12,6 +12,7 @@ import wawer.kamil.notetask.model.responseDTO.ResponseNote;
 import wawer.kamil.notetask.repository.NoteRepository;
 import wawer.kamil.notetask.service.NoteService;
 
+import java.util.Iterator;
 import java.util.List;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
@@ -37,6 +38,36 @@ public class NoteServiceImpl implements NoteService {
     }
 
     @Override
+    public List<ResponseNote> getAllNotes() throws NotContentFoundException {
+        List <Note> allNotes = repository.findAll().stream().filter(isDeleted).collect(Collectors.toList());
+        if(allNotes.size() != 0) {
+            findLastVersionOfNoteDetails(allNotes);
+            return allNotes.stream().map(this::transformEntityToDTO).collect(Collectors.toList());
+        }else {
+            throw new NotContentFoundException();
+        }
+    }
+
+    private void findLastVersionOfNoteDetails(List<Note> allNotes) {
+        for (Note note : allNotes) {
+            int size = note.getNoteDetailsList().size();
+            Iterator iterator = note.getNoteDetailsList().iterator();
+            while (iterator.hasNext()) {
+                NoteDetails details = (NoteDetails) iterator.next();
+                if (details.getVersion() != size) {
+                    iterator.remove();
+                }
+            }
+        }
+    }
+
+    private ResponseNote transformEntityToDTO(Note note){
+        int lastVersionOfNoteDetails = note.getNoteDetailsList().size()-1;
+        NoteDetails noteDetails = note.getNoteDetailsList().get(lastVersionOfNoteDetails);
+        return transformDataToDto(note,noteDetails);
+    }
+
+    @Override
     public ResponseNote getNoteById(Long id) throws NotContentFoundException {
         Note note = repository.findById(id).filter(isDeleted).orElseThrow(NotContentFoundException::new);
         NoteDetails noteDetails = note.getNoteDetailsList().get(note.getNoteDetailsList().size() - 1);
@@ -47,6 +78,7 @@ public class NoteServiceImpl implements NoteService {
         ResponseNote response = new ResponseNote();
         response.setId(note.getId());
         response.setDateOfInitialCreation(note.getDateOfInitialCreation());
+        response.setIsDeleted(note.getIsDeleted());
         response.setDateOfModification(noteDetails.getDateOfModification());
         response.setTitle(noteDetails.getTitle());
         response.setContent(noteDetails.getContent());
@@ -72,7 +104,7 @@ public class NoteServiceImpl implements NoteService {
 
     private void updateDetailsOfNote(Note noteFromDB, NoteDetails newestNote) {
         NoteDetails newNoteDetails = new NoteDetails(newestNote.getTitle(), newestNote.getContent());
-        long newestVersion = (long) noteFromDB.getNoteDetailsList().size() + 1;
+        int newestVersion = noteFromDB.getNoteDetailsList().size() + 1;
         newNoteDetails.setVersion(newestVersion);
         noteFromDB.addNoteDetails(newNoteDetails);
     }

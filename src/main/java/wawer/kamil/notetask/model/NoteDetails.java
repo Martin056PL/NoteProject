@@ -35,7 +35,7 @@ public class NoteDetails implements Serializable {
 
     private LocalDateTime dateOfModification = now();
 
-    private Long version = 1L;
+    private int version = 1;
 
     @ManyToOne(cascade = {DETACH, MERGE, PERSIST, REFRESH},fetch = LAZY)
     @JoinColumn(name = "id")
@@ -46,6 +46,6 @@ public class NoteDetails implements Serializable {
         this.title = title;
         this.content = content;
         this.dateOfModification = now();
-        this.version = 1L;
+        this.version = 1;
     }
 }

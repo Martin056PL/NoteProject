@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import wawer.kamil.notetask.exceptions.NotContentFoundException;
+import wawer.kamil.notetask.model.Note;
 import wawer.kamil.notetask.model.requestDTO.RequestNote;
 import wawer.kamil.notetask.model.responseDTO.ResponseAllNotes;
 import wawer.kamil.notetask.model.responseDTO.ResponseNote;
@@ -36,8 +37,13 @@ public class NoteController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<ResponseNote> getAllNotes(@PathVariable Long id) throws NotContentFoundException {
+    public ResponseEntity<ResponseNote> getNoteById(@PathVariable Long id) throws NotContentFoundException {
         return ok(service.getNoteById(id));
+    }
+
+    @GetMapping
+    public ResponseEntity<List<ResponseNote>> getAllNotes() throws NotContentFoundException {
+        return ok(service.getAllNotes());
     }
 
     @PostMapping
