@@ -23,6 +23,8 @@
         <postgresql>42.2.8</postgresql>
         <jacoco-maven-plugin>0.8.4</jacoco-maven-plugin>
         <sonar-maven-plugin>3.6.0.1398</sonar-maven-plugin>
+        <swagger2>2.9.2</swagger2>
+        <swaggerUI>2.9.2</swaggerUI>
     </properties>
 
     <dependencies>
@@ -69,6 +71,16 @@
             <groupId>org.postgresql</groupId>
             <artifactId>postgresql</artifactId>
             <version>${postgresql.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>io.springfox</groupId>
+            <artifactId>springfox-swagger2</artifactId>
+            <version>${swagger2}</version>
+        </dependency>
+        <dependency>
+            <groupId>io.springfox</groupId>
+            <artifactId>springfox-swagger-ui</artifactId>
+            <version>${swaggerUI}</version>
         </dependency>
     </dependencies>
 
