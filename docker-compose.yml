@@ -1,0 +1,24 @@
+version: '3'
+services:
+  db:
+    hostname: db
+    image: postgres
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: root
+      POSTGRES_DB: note
+    ports:
+      - 5432:5432
+    restart: always
+  api:
+    build: .
+    hostname: NoteApp
+    ports:
+      - 8888:8888
+    depends_on:
+      - db
+    environment:
+      WAIT_HOSTS: db:5432
+      WAIT_BEFORE_HOSTS: 5
+    links:
+      - db:db
