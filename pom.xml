@@ -10,7 +10,7 @@
     </parent>
     <groupId>wawer.kamil</groupId>
     <artifactId>notetask</artifactId>
-    <version>0.0.1</version>
+    <version>1.0</version>
     <name>notetask</name>
     <description>This is my NoteTask</description>
 
@@ -26,6 +26,14 @@
         <swagger2>2.9.2</swagger2>
         <swaggerUI>2.9.2</swaggerUI>
     </properties>
+
+    <distributionManagement>
+        <repository>
+            <id>github</id>
+            <name>Martin056PL</name>
+            <url>https://maven.pkg.github.com/Martin056PL/NoteProject</url>
+        </repository>
+    </distributionManagement>
 
     <dependencies>
         <dependency>
