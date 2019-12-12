@@ -52,6 +52,5 @@ public class NoteDetails implements Serializable {
         this.title = title;
         this.content = content;
         this.dateOfModification = now();
-        this.version = 1;
     }
 }

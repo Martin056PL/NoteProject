@@ -12,7 +12,7 @@ import wawer.kamil.notetask.model.responseDTO.ResponseNote;
 import wawer.kamil.notetask.repository.NoteRepository;
 import wawer.kamil.notetask.service.NoteService;
 
-import java.util.Iterator;
+import java.util.Comparator;
 import java.util.List;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
@@ -22,6 +22,7 @@ import java.util.stream.Collectors;
 public class NoteServiceImpl implements NoteService {
 
     private final NoteRepository repository;
+
     private final ModelMapper mapper;
     private final Predicate<Note> isDeleted = note -> note.getIsDeleted().equals(false);
 
@@ -39,32 +40,23 @@ public class NoteServiceImpl implements NoteService {
 
     @Override
     public List<ResponseNote> getAllNotes() throws NotContentFoundException {
-        List <Note> allNotes = repository.findAll().stream().filter(isDeleted).collect(Collectors.toList());
-        if(allNotes.size() != 0) {
-            findLastVersionOfNoteDetails(allNotes);
-            return allNotes.stream().map(this::transformEntityToDTO).collect(Collectors.toList());
-        }else {
+        List<Note> noteList = repository.findLastesVersion();
+        if (noteList.isEmpty()) {
             throw new NotContentFoundException();
-        }
-    }
-
-    private void findLastVersionOfNoteDetails(List<Note> allNotes) {
-        for (Note note : allNotes) {
-            int size = note.getNoteDetailsList().size();
-            Iterator iterator = note.getNoteDetailsList().iterator();
-            while (iterator.hasNext()) {
-                NoteDetails details = (NoteDetails) iterator.next();
-                if (details.getVersion() != size) {
-                    iterator.remove();
+        } else {
+            return repository.findLastesVersion().stream().sorted(new Comparator<Note>() {
+                @Override
+                public int compare(Note o1, Note o2) {
+                    return o1.getId().compareTo(o2.getId());
                 }
-            }
+            }).map(this::transformEntityToDTO).collect(Collectors.toList());
         }
     }
 
-    private ResponseNote transformEntityToDTO(Note note){
-        int lastVersionOfNoteDetails = note.getNoteDetailsList().size()-1;
+    private ResponseNote transformEntityToDTO(Note note) {
+        int lastVersionOfNoteDetails = note.getNoteDetailsList().size() - 1;
         NoteDetails noteDetails = note.getNoteDetailsList().get(lastVersionOfNoteDetails);
-        return transformDataToDto(note,noteDetails);
+        return transformDataToDto(note, noteDetails);
     }
 
     @Override

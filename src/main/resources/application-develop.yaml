@@ -2,9 +2,9 @@ server:
   port: 8888
 spring:
   datasource:
-    url: jdbc:postgresql://localhost:5432/note
+    url: jdbc:postgresql://localhost/note
     username: postgres
-    password: root
+    password: postgres
   jpa:
     properties:
       hibernate:
