@@ -44,7 +44,6 @@ public class NoteDetails implements Serializable {
     private int version = 1;
 
     @ManyToOne(cascade = {DETACH, MERGE, PERSIST, REFRESH},fetch = LAZY)
-    @JoinColumn(name = "id")
     @JsonIgnore
     private Note note;
 

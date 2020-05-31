@@ -1,0 +1,17 @@
+server:
+  port: ${8888}
+spring:
+  datasource:
+    url: jdbc:postgresql://ec2-54-247-89-181.eu-west-1.compute.amazonaws.com:5432/dkl0bfqfnvnbm
+    username: mupfuugpwomdio
+    password: daf1c89c5c3f088bb9d1e4468d6123af2ac8e59e6f6f9bd12e969d31671d0048
+  jpa:
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        temp: use_jdbc_metadata_defaults = false
+        jdbc:
+          lob:
+            non_contextual_creation: true
+    hibernate:
+      ddl-auto: update
