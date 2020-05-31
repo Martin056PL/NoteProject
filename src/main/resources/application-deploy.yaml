@@ -1,5 +1,5 @@
 server:
-  port: ${8888}
+  port: 8888
 spring:
   datasource:
     url: jdbc:postgresql://ec2-54-247-89-181.eu-west-1.compute.amazonaws.com:5432/dkl0bfqfnvnbm

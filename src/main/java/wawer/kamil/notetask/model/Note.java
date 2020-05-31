@@ -33,9 +33,7 @@ public class Note implements Serializable {
     @Column(name = "is_deleted")
     private Boolean isDeleted;
 
-    //@ElementCollection(fetch = LAZY)
     @OneToMany(mappedBy = "note", cascade = ALL)
-    //@JoinColumn(name = "id")
     private List<NoteDetails> noteDetailsList;
 
     public Note() {
