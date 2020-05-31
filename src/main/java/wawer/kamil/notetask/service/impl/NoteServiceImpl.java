@@ -45,7 +45,8 @@ public class NoteServiceImpl implements NoteService {
     @Override
     public List<ResponseNote> getAllNotes() throws NotContentFoundException {
         List<Note> noteList = repository.findLastesVersion();
-        if (noteList.isEmpty()) {
+        Boolean isAllDeleted = isAllDeleted(noteList);
+        if (noteList.isEmpty() || isAllDeleted) {
             throw new NotContentFoundException();
         } else {
             return repository.findLastesVersion().stream().filter(isDeleted)
@@ -53,6 +54,10 @@ public class NoteServiceImpl implements NoteService {
                     .map(this::transformEntityToDTO)
                     .collect(Collectors.toList());
         }
+    }
+
+    private Boolean isAllDeleted(List<Note> list){
+        return list.stream().map(Note::getIsDeleted).allMatch(n -> n.equals(true));
     }
 
     private ResponseNote transformEntityToDTO(Note note) {
