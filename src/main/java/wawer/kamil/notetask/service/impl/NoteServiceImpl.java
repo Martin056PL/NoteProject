@@ -48,7 +48,7 @@ public class NoteServiceImpl implements NoteService {
         if (noteList.isEmpty()) {
             throw new NotContentFoundException();
         } else {
-            return repository.findLastesVersion().stream()
+            return repository.findLastesVersion().stream().filter(isDeleted)
                     .sorted(Comparator.comparing(Note::getId))
                     .map(this::transformEntityToDTO)
                     .collect(Collectors.toList());

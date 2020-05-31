@@ -4,7 +4,7 @@ spring:
   datasource:
     url: jdbc:postgresql://localhost/note
     username: postgres
-    password: postgres
+    password: root
   jpa:
     properties:
       hibernate:
