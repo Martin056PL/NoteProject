@@ -24,7 +24,7 @@
         <jacoco-maven-plugin>0.8.4</jacoco-maven-plugin>
         <sonar-maven-plugin>3.6.0.1398</sonar-maven-plugin>
         <swagger2>2.9.2</swagger2>
-        <swaggerUI>2.9.2</swaggerUI>
+        <swaggerUI>2.10.0</swaggerUI>
     </properties>
 
     <distributionManagement>
